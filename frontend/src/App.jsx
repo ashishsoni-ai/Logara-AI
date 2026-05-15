@@ -1,23 +1,29 @@
-import React from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import LogExplorer from './components/LogExplorer';
+import { Routes, Route } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Docs from './pages/Docs';
+import ScrollToHash from './components/ScrollToHash';
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-white selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-[#0c0a09] text-white">
+
+      <ScrollToHash />
+
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-8 pt-20 pb-32 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 -left-20 w-[500px] h-[500px] bg-indigo-600/10 blur-[120px] rounded-full -z-10 animate-pulse" />
-        <div className="absolute bottom-0 -right-20 w-[500px] h-[500px] bg-sky-600/10 blur-[120px] rounded-full -z-10 animate-pulse delay-1000" />
+      <main className="max-w-7xl mx-auto px-8 pt-20 pb-32">
 
-        <div className="flex flex-col items-center text-center">
-          <Hero />
-          <LogExplorer />
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/docs" element={<Docs />} />
+        </Routes>
+
       </main>
+
     </div>
   );
 }

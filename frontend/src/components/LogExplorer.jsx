@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const LogExplorer = () => {
-  const [logs, setLogs] = useState([
+  const logs = [
     { timestamp: '2026-04-02 21:40:12', level: 'INFO', message: 'Searching for anomalies in cluster-A...' },
     { timestamp: '2026-04-02 21:40:15', level: 'WARN', message: 'Latency spike detected in auth-service' },
     { type: 'insight', content: 'DETECTED: Unexpected latency spike in auth-service.' },
     { type: 'insight', content: 'ROOT CAUSE: DB connection pooling exhaustion (max_conn=100 reached).' },
     { type: 'insight', content: "SUGGESTED FIX: Increase 'pool_size' to 150 in config/database.yaml" }
-  ]);
+  ];
 
   return (
     <div className="mt-24 w-full max-w-5xl rounded-2xl border border-neutral-800 bg-neutral-900/50 backdrop-blur-xl p-4 shadow-2xl relative group opacity-0 animate-[fade-in_1s_ease-out_1.2s_forwards]">

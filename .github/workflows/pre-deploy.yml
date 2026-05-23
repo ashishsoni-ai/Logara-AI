@@ -14,4 +14,10 @@ jobs:
   validate:
     uses: ./.github/workflows/repo-validation.yml
     with:
+      run_backend: true
+      run_frontend: true
+      run_infrastructure: true
+      run_docker_builds: true
+      run_integration_tests: true
+      collect_backend_coverage: true
       run_deploy_readiness: true

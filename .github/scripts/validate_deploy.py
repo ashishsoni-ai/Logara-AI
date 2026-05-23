@@ -15,12 +15,23 @@ REQUIRED_PATHS = (
     ".github/dependabot.yml",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/branch-protection.md",
+    ".github/labels.json",
+    ".github/labeler.yml",
+    ".github/auto_assign.yml",
+    ".github/commitlint.config.mjs",
     ".github/ISSUE_TEMPLATE/config.yml",
     ".github/ISSUE_TEMPLATE/bug_report.yml",
     ".github/ISSUE_TEMPLATE/feature_request.yml",
     ".github/ISSUE_TEMPLATE/improvement.yml",
     ".github/ISSUE_TEMPLATE/question.yml",
+    ".github/workflows/auto-assign.yml",
+    ".github/workflows/labeler.yml",
+    ".github/workflows/pr-hygiene.yml",
     ".github/workflows/security.yml",
+    ".github/workflows/sync-labels.yml",
+    "backend/Dockerfile",
+    "frontend/Dockerfile",
+    "frontend/nginx.conf",
 )
 
 REQUIRED_ENV_KEYS = {

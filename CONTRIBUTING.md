@@ -64,6 +64,7 @@ As a GSSoC (GirlScript Summer of Code) project, we especially welcome first-time
 4. **Submit PR**: Open a PR from your branch to the `main` branch of `Logara-AI`.
 5. **Describe your changes**: Use the PR template to explain what you've done.
 6. **Wait for required checks**: CI and security workflows must pass before merge.
+7. **Follow naming conventions**: Pull request titles and commit messages should follow conventional commit style such as `feat:`, `fix:`, `docs:`, or `ci:`.
 
 ---
 

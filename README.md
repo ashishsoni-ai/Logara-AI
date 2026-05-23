@@ -151,6 +151,11 @@ Current validation covers:
 - repository deploy prerequisite checks via `.github/scripts/validate_deploy.py`
 - Docker Compose configuration validation with `docker compose config`
 - backend smoke checks that import the FastAPI app and worker successfully
+- changed-files-aware PR CI to avoid unnecessary jobs on smaller pull requests
+- backend coverage artifact generation in CI
+- Docker image build validation for backend and frontend images
+- live Redis/Qdrant integration smoke testing in CI
+- PR title lint, commit message lint, label automation, and auto-assignment workflows
 
 Repository governance also includes:
 

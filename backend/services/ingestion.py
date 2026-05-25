@@ -63,7 +63,54 @@ class IngestionService:
             return self.ingest_batch_logs(request_model.logs)
 
         return self.ingest_structured_log(request_model)
+    def ingest_batch_logs(
+    self,
+    logs: list[StructuredLogIngestRequest],
+) -> dict[str, Any]:
 
+        processed_records = 0
+        failed_records = 0
+
+        failures: list[dict[str, Any]] = []
+
+        total_redaction_summary: dict[str, int] = {}
+
+        for index, log in enumerate(logs):
+            try:
+                normalized_log, redaction_summary = (
+                    self._normalize_structured_log(log)
+                )
+
+                self._queue_normalized_payload(
+                    normalized_log.model_dump()
+                )
+
+                processed_records += 1
+
+                for key, value in redaction_summary.items():
+                    total_redaction_summary[key] = (
+                        total_redaction_summary.get(key, 0) + value
+                    )
+
+            except Exception as exc:
+                failed_records += 1
+
+                failures.append({
+                    "record_index": index,
+                    "error": str(exc),
+                })
+
+        return {
+            "status": (
+                "partial_success"
+                if failed_records > 0
+                else "success"
+            ),
+            "processed_records": processed_records,
+            "failed_records": failed_records,
+            "failures": failures,
+            "redaction_summary": total_redaction_summary,
+        }
     def ingest_raw_log(self, log_data: str) -> dict[str, Any]:
         if not log_data or not log_data.strip():
             raise HTTPException(status_code=400, detail="Log message cannot be empty")
@@ -131,56 +178,53 @@ class IngestionService:
         }
 
         def ingest_batch_logs(
-        self,
-        logs: list[StructuredLogIngestRequest],
-    ) -> dict[str, Any]:
+    self,
+    logs: list[StructuredLogIngestRequest],
+) -> dict[str, Any]:
 
-        processed_records = 0
-        failed_records = 0
+            processed_records = 0
+            failed_records = 0
 
-        failures: list[dict[str, Any]] = []
+            failures: list[dict[str, Any]] = []
 
-        total_redaction_summary: dict[str, int] = {}
+            total_redaction_summary: dict[str, int] = {}
 
-        for index, log in enumerate(logs):
-            try:
-                normalized_log, redaction_summary = (
-                    self._normalize_structured_log(log)
-                )
-
-                self._queue_normalized_payload(
-                    normalized_log.model_dump()
-                )
-
-                processed_records += 1
-
-                for key, value in redaction_summary.items():
-                    total_redaction_summary[key] = (
-                        total_redaction_summary.get(key, 0) + value
+            for index, log in enumerate(logs):
+                try:
+                    normalized_log, redaction_summary = (
+                        self._normalize_structured_log(log)
                     )
 
-            except Exception as exc:
-                failed_records += 1
+                    self._queue_normalized_payload(
+                        normalized_log.model_dump()
+                    )
 
-                failures.append({
-                    "record_index": index,
-                    "error": str(exc),
-                })
+                    processed_records += 1
 
-        status = (
-            "success"
-            if failed_records == 0
-            else "partial_success"
-        )
+                    for key, value in redaction_summary.items():
+                        total_redaction_summary[key] = (
+                            total_redaction_summary.get(key, 0) + value
+                        )
 
-        return {
-            "status": status,
-            "processed_records": processed_records,
-            "failed_records": failed_records,
-            "failures": failures,
-            "redaction_summary": total_redaction_summary,
-            "fallback_used": False,
-        }
+                except Exception as exc:
+                    failed_records += 1
+
+                    failures.append({
+                        "record_index": index,
+                        "error": str(exc),
+                    })
+
+            return {
+                "status": (
+                    "partial_success"
+                    if failed_records > 0
+                    else "success"
+                ),
+                "processed_records": processed_records,
+                "failed_records": failed_records,
+                "failures": failures,
+                "redaction_summary": total_redaction_summary,
+            }
       
     def ingest_otel_logs(self, payload: dict[str, Any]) -> dict[str, Any]:
         if not payload:

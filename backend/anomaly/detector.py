@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 from anomaly.aggregator import (
     record_event,
@@ -48,7 +48,7 @@ def analyze_log(
         message=message,
         anomaly_score=round(score, 2),
         severity=AlertSeverity.CRITICAL,
-        timestamp=datetime.now(UTC),
+        timestamp=datetime.now(timezone.utc),
     )
 
     logger.warning(

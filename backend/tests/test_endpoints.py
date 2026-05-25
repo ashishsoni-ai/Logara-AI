@@ -114,11 +114,11 @@ def test_ingest_whitespace_log():
 def test_ingest_raw_fallback(mock_lpush):
     response = client.post("/ingest", json={"log_data": "this is not standard log format"})
     assert response.status_code == 200
-    assert response.json() == {
-        "status": "accepted_raw_queued",
-        "message": "this is not standard log format",
-        "redaction_summary": {},
-    }
+    res_data = response.json()
+    assert res_data["status"] == "accepted_raw_queued"
+    assert res_data["message"] == "this is not standard log format"
+    assert res_data["redaction_summary"] == {}
+    assert "structured_output" in res_data
     mock_lpush.assert_called_once()
 
 @patch("utils.queue.redis_client.lpush")

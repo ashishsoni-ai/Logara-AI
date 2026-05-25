@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta, timezone
 
 
 SERVICE_ACTIVITY = defaultdict(list)
@@ -10,7 +10,7 @@ WINDOW_MINUTES = 5
 
 
 def record_event(service_id: str):
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
 
     SERVICE_ACTIVITY[service_id].append(now)
 

@@ -181,7 +181,7 @@ class Redactor:
         Returns a deep copy with redacted values; original is never modified.
         """
         if not self.enabled:
-            return data
+            return deepcopy(data)
 
         data = copy.deepcopy(data)
 
@@ -198,7 +198,11 @@ class Redactor:
                     for v in value
                 ]
 
-        return data
+            return value
+
+     
+
+        return _sanitize(deepcopy(data))
 
 def build_default_redactor(
     enabled: bool = True,

@@ -186,9 +186,6 @@ class Redactor:
             if isinstance(value, str):
                 data[key] = self.redact(value)
 
-            elif isinstance(value, dict):
-                self.redact_dict(value)
-
             elif isinstance(value, list):
                 data[key] = [
                     self.redact(v) if isinstance(v, str)
